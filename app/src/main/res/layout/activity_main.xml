@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+
+    <include layout="@layout/default_app_tab"
+        android:id="@+id/tabMain"/>
+
+    <android.support.v4.widget.DrawerLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/mainDrawLayout">
+
+
+    <ScrollView
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<android.support.constraint.ConstraintLayout
+    android:background="@drawable/edittext_style"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pieMain"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linMainStatus">
+
+    </com.github.mikephil.charting.charts.PieChart>
+
+
+
+
+    <TextView
+        android:id="@+id/txtMainSummaray"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pieMain" />
+
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        app:layout_constraintTop_toBottomOf="@id/txtMainSummaray"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/btnMainAddRev"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:textColor="@color/white"
+            android:layout_weight="1"
+            android:background="@drawable/button_main_style"
+            android:text="Add Revenue"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pieMain" />
+
+        <Button
+            android:id="@+id/btnMainDetails"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_style"
+            android:text="Details"
+            android:visibility="gone"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pieMain" />
+
+        <Button
+
+            android:id="@+id/btnMainAddExp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_main_style"
+            android:gravity="center"
+            android:text="Add Expense"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pieMain" />
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="167dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtPeriodMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearSwitch" />
+
+    <LinearLayout
+        android:id="@+id/linearSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/edittext_style"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/radioMain">
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/day"
+                android:id="@+id/radioDay"
+                android:layout_weight="1"/>
+
+            <RadioButton
+                android:id="@+id/radioMonth"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/month"
+                android:layout_weight="1"/>
+
+            <RadioButton
+                android:id="@+id/radioYear"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/year"/>
+        </RadioGroup>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:id="@+id/linMainStatus"
+        app:layout_constraintTop_toBottomOf="@+id/txtPeriodMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textAlignment="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/total_n0_00"
+            android:layout_weight="1"
+            android:id="@+id/txtMainTotal"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/total_button"
+            android:layout_marginEnd="5dp" />
+
+        <TextView
+            android:textAlignment="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/txtMainSpent"
+            android:text="@string/spent_n0_00"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:background="@drawable/spent_button"
+            />
+
+        <TextView
+            android:textAlignment="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtMainBalance"
+            android:text="@string/balance_n0_00"
+            android:textColor="@color/white"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:background="@drawable/balance_button"
+            android:layout_marginStart="5dp" />
+
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>
+</ScrollView>
+
+        <android.support.design.widget.NavigationView
+            android:id="@+id/mainNavigate"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:menu="@menu/navigation_menu"
+            app:headerLayout="@layout/navigation_header"
+            >
+
+        </android.support.design.widget.NavigationView>
+    </android.support.v4.widget.DrawerLayout>
+
+</LinearLayout>

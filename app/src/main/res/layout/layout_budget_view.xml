@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_margin="10dp"
+        android:background="@drawable/edittext_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+
+            android:id="@+id/btnViewBudgetDetails"
+            android:textStyle="bold"
+            android:text="@string/view_details"
+            android:textColor="@color/white"
+            android:background="@drawable/button_main_style"
+            android:drawableLeft="@drawable/icon_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btnSwitchBudget"
+            android:textStyle="bold"
+            android:text="@string/switch_to_budget"
+            android:layout_marginTop="10dp"
+            android:drawableLeft="@drawable/icons_toggle"
+            android:textColor="@color/white"
+            android:background="@drawable/button_main_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btnCopyBudget"
+            android:textStyle="bold"
+            android:text="@string/copy_and_create_new_budget"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/white"
+            android:background="@drawable/button_main_style"
+            android:drawableLeft="@drawable/icon_copy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+
+    </LinearLayout>
+</LinearLayout>

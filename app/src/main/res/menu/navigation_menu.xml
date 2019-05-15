@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/dNewBudget"
+        android:icon="@drawable/create_his"
+        android:title="@string/new_budget"/>
+
+    <item android:id="@+id/dExpenseDetails"
+        android:title="@string/view_expenses_made"
+        android:icon="@drawable/revenue"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/dRevenueDetails"
+        android:icon="@drawable/revenue2"
+        android:title="View Revenue" />
+
+    <item android:id="@+id/dBudgetHistory"
+
+        android:icon="@drawable/history"
+        android:title="View Budget History"/>
+
+    <item android:id="@+id/dSettings"
+        android:icon="@drawable/settings"
+        android:title="Settings"/>
+    <item android:id="@+id/dFeedback"
+        android:icon="@drawable/feedback2"
+        android:title="Feedback"/>
+    <item android:id="@+id/dHelp"
+        android:icon="@drawable/help"
+        android:title="Help"/>
+
+
+    <item android:id="@+id/dLogOut"
+        android:icon="@drawable/logout2"
+        android:title="Logout"/>
+
+
+</menu>

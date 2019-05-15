@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "917694739671",
+    "firebase_url": "https://mybudget-879f5.firebaseio.com",
+    "project_id": "mybudget-879f5",
+    "storage_bucket": "mybudget-879f5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:917694739671:android:f3605fe69255904f",
+        "android_client_info": {
+          "package_name": "app.start.lonewolf.mybudget"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "917694739671-i963v1n14k03pkkmih8lji3b4eldaa6c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.start.lonewolf.mybudget",
+            "certificate_hash": "1a990126a278c7a05ec6de2c074ec25edb3f6ffa"
+          }
+        },
+        {
+          "client_id": "917694739671-kaqt34r6pf214vg2qj064t1lmr3415if.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.start.lonewolf.mybudget",
+            "certificate_hash": "2c0273c6903308bcff740b1c586d457648b6ab87"
+          }
+        },
+        {
+          "client_id": "917694739671-8f4ugu2qg1nuni28qqaggafa4lfu9jkn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9hg7537XlocHHZPYI2e7qdxsf50L4-aQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "917694739671-8f4ugu2qg1nuni28qqaggafa4lfu9jkn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
