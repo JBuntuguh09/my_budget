@@ -35,10 +35,7 @@
         android:id="@+id/pieMain"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linMainStatus">
@@ -81,13 +78,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/pieMain" />
 
-        <Button
+        <EditText
             android:id="@+id/btnMainDetails"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:background="@drawable/button_style"
+
             android:text="Details"
             android:visibility="gone"
             android:textColor="@color/white"
@@ -120,54 +117,109 @@
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/txtPeriodMain"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:textStyle="bold"
-        android:textAlignment="center"
+
+
+    <LinearLayout
+        android:id="@+id/linDate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearSwitch" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/linearSwitch"
+        android:layout_marginTop="4dp"
+        android:orientation="horizontal">
+
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_weight="4"
+                android:id="@+id/txtBudgetNameMain"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textAlignment="center"
+
+                />
+
+
+            <ImageView
+                android:gravity="center"
+                android:id="@+id/imgBudgetNameMain"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/switch_icon" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_weight="4"
+                android:id="@+id/txtPeriodMain"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textAlignment="center"
+
+                />
+
+
+            <ImageView
+                android:gravity="center"
+                android:id="@+id/imgMain"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/switch_icon" />
+        </LinearLayout>
+        </LinearLayout>
+
+
 
     <LinearLayout
         android:id="@+id/linearSwitch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/edittext_style"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
         android:layout_marginRight="20dp"
+        android:background="@drawable/edittext_style"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <RadioGroup
+            android:id="@+id/radioMain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/radioMain">
+            android:orientation="horizontal">
+
             <RadioButton
+                android:id="@+id/radioDay"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/day"
-                android:id="@+id/radioDay"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:text="@string/day" />
 
             <RadioButton
                 android:id="@+id/radioMonth"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/month"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:text="@string/month" />
 
             <RadioButton
                 android:id="@+id/radioYear"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/year"/>
+                android:text="@string/year" />
         </RadioGroup>
 
 
@@ -176,7 +228,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         android:id="@+id/linMainStatus"
-        app:layout_constraintTop_toBottomOf="@+id/txtPeriodMain"
+        app:layout_constraintTop_toBottomOf="@+id/linDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView

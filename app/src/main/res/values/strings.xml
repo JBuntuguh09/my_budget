@@ -78,6 +78,12 @@
     <string name="switch_to_budget">Switch to Budget</string>
     <string name="view_details">View Details</string>
     <string name="newBudgetName">New Budget Name</string>
+    <string name="success_new_budget">Successfully created new Budget</string>
+    <string name="select_a_budget">Select a Budget</string>
+    <string name="select_year">Select Year</string>
+    <string name="select_month">Select Month</string>
+    <string name="no_expense">You do not have any recorded expenses</string>
+    <string name="no_revenue">You do not have any recorded revenue</string>
 
 
 </resources>

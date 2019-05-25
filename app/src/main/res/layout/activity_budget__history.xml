@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".Budget_History">
 
-    <android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
+    <android.support.v7.widget.Toolbar
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/tabSettings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,7 +15,8 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView2">
 
         <TextView
             android:layout_width="match_parent"
@@ -27,21 +29,27 @@
             android:textStyle="bold" />
 
     </android.support.v7.widget.Toolbar>
+
     <ScrollView
-        app:layout_constraintTop_toBottomOf="@+id/tabSettings"
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabSettings">
 
         <LinearLayout
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/edittext_style"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
+            android:background="@drawable/edittext_style"
             android:orientation="vertical">
 
             <com.github.mikephil.charting.charts.BarChart

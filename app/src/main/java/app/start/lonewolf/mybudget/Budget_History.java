@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -22,6 +24,8 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,7 +46,7 @@ import app.start.lonewolf.mybudget.Resources.Settings;
 public class Budget_History extends AppCompatActivity {
 
     private BarChart barChart;
-    private DatabaseReference budgetsRef;
+    private DatabaseReference budgetsRef, userRef;
     private FirebaseAuth auth;
     private Settings settings;
     private LinearLayout linearLayout, linTotal;
@@ -58,7 +62,7 @@ public class Budget_History extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-        setContentView(R.layout.activity_budget__history);
+        setContentView(R.layout.activity_budget_history2);
 
 
         arrayList = new ArrayList<>(1999);
@@ -66,6 +70,7 @@ public class Budget_History extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         userId = auth.getCurrentUser().getUid();
         budgetsRef = FirebaseDatabase.getInstance().getReference();
+        userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
         linearLayout = findViewById(R.id.linHistoryMain);
         barChart = findViewById(R.id.barHistory);
 
@@ -175,12 +180,21 @@ public class Budget_History extends AppCompatActivity {
             TextView bRevenue = view.findViewById(R.id.txtHistoryRevenue);
             TextView bExpense = view.findViewById(R.id.txtHistoryExpense);
             TextView bRemaining = view.findViewById(R.id.txtHistoryBalance);
+            LinearLayout layout = view.findViewById(R.id.linHistoryText);
 
             final HashMap<String, String> hashMap = arrayList.get(x);
             bName.setText(hashMap.get("name"));
             bRevenue.setText(hashMap.get("revenue"));
             bExpense.setText(hashMap.get("expense"));
             bRemaining.setText(hashMap.get("remaining"));
+
+            if(hashMap.get("name").toLowerCase().equals(settings.getCURRENTBUDGET().toLowerCase())){
+                layout.setBackgroundResource(R.drawable.active_style);
+                layout.requestFocus();
+                layout.setFocusable(true);
+                layout.setFocusableInTouchMode(true);
+            }
+
 
 //            view.setOnClickListener(new View.OnClickListener() {
 //                @Override
@@ -216,13 +230,25 @@ public class Budget_History extends AppCompatActivity {
 
                     if(!settings.getCURRENTBUDGET().equals(hashMap.get("name"))) {
                         switchBudget.setVisibility(View.VISIBLE);
+
                         switchBudget.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                settings.setCURRENTBUDGET(hashMap.get("name"));
-                                Intent intent = new Intent(Budget_History.this, MainActivity.class);
-                                startActivity(intent);
-                                finish();
+                                userRef.child("budget_name").setValue(settings.getCURRENTBUDGET()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        settings.setCURRENTBUDGET(hashMap.get("name"));
+                                        Intent intent = new Intent(Budget_History.this, MainActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(Budget_History.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                                    }
+                                });
+
                             }
                         });
 

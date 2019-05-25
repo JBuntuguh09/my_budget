@@ -60,7 +60,10 @@ import java.util.List;
 import app.start.lonewolf.mybudget.Dialogues.Budget_History_Details;
 import app.start.lonewolf.mybudget.Dialogues.FeedBack;
 import app.start.lonewolf.mybudget.Dialogues.Help;
+import app.start.lonewolf.mybudget.Dialogues.Misc_Details;
+import app.start.lonewolf.mybudget.Dialogues.View_Budget;
 import app.start.lonewolf.mybudget.Resources.Date_Picker;
+import app.start.lonewolf.mybudget.Resources.Date_Picker2;
 import app.start.lonewolf.mybudget.Resources.Resource;
 import app.start.lonewolf.mybudget.Resources.Settings;
 
@@ -74,11 +77,13 @@ public class MainActivity extends AppCompatActivity {
     private String currentUserId="";
     private Double totalRevenue;
     private Double totalExpense;
-    private Button addRev, addExp, details;
+    private Button addRev, addExp;
+    private EditText details;
     private LinearLayout linearLayout;
     private String eventTitle ="";
     private ProgressBar progressBar, progressBarMain;
-    private TextView summary, current_period, spent, total, balance;
+    private TextView summary, current_period, spent, total, balance, current_Budget;
+    private ImageView imgDate, imgBudgetChange ;
     private String periondChecker = "empty", alterTotal="0";
 
     private Settings settings;
@@ -113,6 +118,9 @@ public class MainActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.mainNavigate);
         linearLayout = findViewById(R.id.linMainStatus);
 
+        current_Budget = findViewById(R.id.txtBudgetNameMain);
+        imgBudgetChange = findViewById(R.id.imgBudgetNameMain);
+
         balance = findViewById(R.id.txtMainBalance);
         spent = findViewById(R.id.txtMainSpent);
         total = findViewById(R.id.txtMainTotal);
@@ -121,6 +129,8 @@ public class MainActivity extends AppCompatActivity {
         progressBarMain = findViewById(R.id.progressMain);
         current_period = findViewById(R.id.txtPeriodMain);
         toolbar = findViewById(R.id.tabMain);
+
+        imgDate = findViewById(R.id.imgMain);
 
         radioMain = findViewById(R.id.radioMain);
         day = findViewById(R.id.radioDay);
@@ -131,6 +141,8 @@ public class MainActivity extends AppCompatActivity {
             settings.setCHECKHELP("1");
             Help.showHelp(MainActivity.this, linearLayout);
         }
+
+
 
 
         switch (settings.getPERIOD()) {
@@ -191,6 +203,8 @@ public class MainActivity extends AppCompatActivity {
 
         addRev = findViewById(R.id.btnMainAddRev);
         addExp = findViewById(R.id.btnMainAddExp);
+
+
         details = findViewById(R.id.btnMainDetails);
 
 
@@ -206,12 +220,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getButtons() {
+
+        String budg = Resource.capitalize(settings.getCURRENTBUDGET().toLowerCase());
+        current_Budget.setText(budg);
+
+        imgBudgetChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View_Budget.showBudgets(MainActivity.this, linearLayout);
+            }
+        });
         spent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(totalExpense>0){
                 settings.setTYPE("Expense");
                 Intent intent = new Intent(MainActivity.this, Setup_Budget.class);
                 startActivity(intent);
+                }else
+                    Toast.makeText(MainActivity.this, R.string.no_expense, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -255,18 +282,28 @@ public class MainActivity extends AppCompatActivity {
                     finish();
 
                 }else if(item.getItemId()==R.id.dExpenseDetails){
-                    drawerLayout.closeDrawer(Gravity.START);
+                    if(totalExpense>0) {
+                        drawerLayout.closeDrawer(Gravity.START);
 
-                    settings.setTYPE("Expense");
-                    Intent intent = new Intent(MainActivity.this, Setup_Budget.class);
-                    startActivity(intent);
+                        settings.setTYPE("Expense");
+                        Intent intent = new Intent(MainActivity.this, Setup_Budget.class);
+                        startActivity(intent);
+                    }else {
+                        Toast.makeText(MainActivity.this, R.string.no_expense, Toast.LENGTH_SHORT).show();
+                    }
+
 
                 }else if(item.getItemId()==R.id.dRevenueDetails){
-                    drawerLayout.closeDrawer(Gravity.START);
+                    if(totalRevenue>0) {
+                        drawerLayout.closeDrawer(Gravity.START);
 
-                    settings.setTYPE("Revenue");
-                    Intent intent = new Intent(MainActivity.this, Setup_Budget.class);
-                    startActivity(intent);
+                        settings.setTYPE("Revenue");
+                        Intent intent = new Intent(MainActivity.this, Setup_Budget.class);
+                        startActivity(intent);
+                    }
+                    else {
+                        Toast.makeText(MainActivity.this, R.string.no_revenue, Toast.LENGTH_SHORT).show();
+                    }
 
                 }else if(item.getItemId()==R.id.dBudgetHistory){
                     drawerLayout.closeDrawer(Gravity.START);
@@ -313,6 +350,58 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        imgDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (settings.getPERIOD()){
+                    case "Day":
+                        Date_Picker2 date_picker = new Date_Picker2();
+                        date_picker.setEditTextDisplay(details);
+                        date_picker.show(getFragmentManager(), null);
+
+                        details.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                String newDate = details.getText().toString();
+                                String mDate[] = newDate.split("/");
+
+//                                if(Integer.parseInt(mDate[1])<10){
+//                                    mDate[1] = "0"+mDate[1];
+//                                }
+//                                if(Integer.parseInt(mDate[0])<10){
+//                                    mDate[0] = "0"+mDate[0];
+//                                }
+
+                                current_period.setText(Resource.getCustomDayMonthYear(newDate));
+                                settings.setCUSTOMDATE(mDate[2]+"-"+mDate[1]+"-"+mDate[0]);
+                                settings.setCUSTOMDATEINDICATOR(true);
+
+                                //getBudeget("Day");
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable editable) {
+
+                            }
+                        });
+                       break;
+
+                    case "Month":
+                        Misc_Details.showDate(MainActivity.this, linearLayout);
+
+                        break;
+                    case "Year" :
+                        Misc_Details.showDate(MainActivity.this, linearLayout);
+                        break;
+                }
+            }
+        });
+
     }
 
     private void checkPeriod(){
@@ -347,8 +436,8 @@ public class MainActivity extends AppCompatActivity {
                     getBudeget(periondChecker);
                     //current_period.setText(Resource.getCurrentMonthYear());
                     if(settings.getCUSTOMDATEINDICATOR()){
-                        String newYear[] = settings.getCUSTOMDATE().split("-");
-                        current_period.setText(newYear[1]+" Month");
+                        String newYear = Resource.getFormatDateAPP(settings.getCUSTOMDATE());
+                        current_period.setText(Resource.getCustomMonthYear(newYear));
                     }else {
                         current_period.setText(Resource.getCurrentMonthYear());
                     }
@@ -373,11 +462,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     private void configureSettings() {
         //date is yyyy-mm-dd
-        String currDate = Resource.getCurrentDate();
+        String currDate ;
         if(settings.getCUSTOMDATEINDICATOR()){
             currDate = settings.getCUSTOMDATE();
+
 
         }else {
             currDate = Resource.getCurrentDate();
@@ -420,7 +511,7 @@ public class MainActivity extends AppCompatActivity {
                             if (settings.getCUSTOMDATEINDICATOR()) {
                                 //String newYear[] = settings.getCUSTOMDATE().split("-");
                                 String newYear = Resource.getFormatDateAPP(settings.getCUSTOMDATE());
-                                current_period.setText(Resource.getCustomCurrentDayMonthYear(newYear));
+                                current_period.setText(Resource.getCustomDayMonthYear(newYear));
                             } else {
                                 //current_period.setText(Resource.getCurrentDayMonthYear());
                            /* if(settings.getCUSTOMDATEINDICATOR()){
@@ -435,14 +526,14 @@ public class MainActivity extends AppCompatActivity {
                             getBudeget(periondChecker);
                             break;
                         case "Month":
-//                            if (settings.getCUSTOMDATEINDICATOR()) {
-//                                String newDate = Resource.getFormatDateAPP(settings.getCUSTOMDATE());
-//                                String dateArray[] = newDate.split("/");
-//                                current_period.setText(Resource.getFormatDateAPP(settings.getCUSTOMDATE()));
-//                            } else {
+                            if (settings.getCUSTOMDATEINDICATOR()) {
+                                String newYear = Resource.getFormatDateAPP(settings.getCUSTOMDATE());
+                                current_period.setText(Resource.getCustomMonthYear(newYear));
+                            } else {
                                 current_period.setText(Resource.getCurrentMonthYear());
-                                getBudeget(periondChecker);
-                           // }
+                            }
+                            getBudeget(periondChecker);
+
                             break;
                         case "Year":
                             //current_period.setText(Resource.getCurrentYear());
@@ -470,7 +561,7 @@ public class MainActivity extends AppCompatActivity {
     private void getBudeget(String timePeriod) {
 
         progressBarMain.setVisibility(View.VISIBLE);
-        //Toast.makeText(this, settings.getPERIOD() +" "+periondChecker, Toast.LENGTH_SHORT).show();
+
         budgetRef.child(settings.getCURRENTBUDGET()).addValueEventListener(new ValueEventListener() {
 
             @Override
@@ -491,8 +582,9 @@ public class MainActivity extends AppCompatActivity {
                                 itemPeriodChecker = itemPeriod;
                                 break;
                             case "Month":
-                                Log.d("hope", itemPeriodChecker);
+
                                 itemPeriodChecker = iPeriod[0] + iPeriod[1];
+
                                 break;
                             case "Year":
                                 itemPeriodChecker = iPeriod[0];
@@ -503,6 +595,7 @@ public class MainActivity extends AppCompatActivity {
                         if (child.child("type").getValue().toString().equals("Revenue") && itemPeriodChecker.equals(periondChecker))  {
                             amountRevenue = Double.parseDouble(child.child("amount").getValue().toString());
                             totalRevenue = totalRevenue + amountRevenue;
+                            //Log.d("hope", totalRevenue.toString()+periondChecker);
 
                         }
                         Double amountExpense = 0.00;
@@ -699,8 +792,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        if(settings.getCUSTOMDATEINDICATOR()){
+            String[] cDate = settings.getCUSTOMDATE().split("-");
+            String mDate = cDate[2]+"/"+cDate[1]+"/"+cDate[0];
 
-        dob.setText(Resource.getCurrentDateFormat2());
+            dob.setText(mDate);
+        }else {
+            dob.setText(Resource.getCurrentDateFormat2());
+        }
+
 
 
         amountQty.addTextChangedListener(new TextWatcher() {
@@ -846,7 +946,7 @@ public class MainActivity extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(MainActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                             item.setEnabled(true);
                             amount.setEnabled(true);
                             submit.setEnabled(true);
@@ -861,7 +961,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(MainActivity.this, databaseError.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, databaseError.getMessage(), Toast.LENGTH_LONG).show();
                 item.setEnabled(true);
                 amount.setEnabled(true);
                 submit.setEnabled(true);
@@ -944,7 +1044,7 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         if(list.contains(name.getText().toString())){
-                            Toast.makeText(MainActivity.this, "This Budget name has already been use. Please enter a different budget name", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "This Budget name has already been use. Please enter a different budget name", Toast.LENGTH_LONG).show();
                             name.setEnabled(true);
                             amount.setEnabled(true);
                             submit.setEnabled(true);
@@ -977,8 +1077,8 @@ public class MainActivity extends AppCompatActivity {
         budgetId.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.equals(null)) {
-                    String newDate = Resource.getFormatDateAPI(date.getText().toString());
+                if (dataSnapshot != null) {
+                    final String newDate = Resource.getFormatDateAPI(date.getText().toString());
                     int bugId = Integer.parseInt(dataSnapshot.getValue().toString()) + 1;
                     HashMap<String, String> hashMap = new HashMap<>();
                     hashMap.put("type", "Revenue");
@@ -994,6 +1094,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(MainActivity.this, "New Budget Created", Toast.LENGTH_SHORT).show();
+                            userRef.child("budget_name").setValue(settings.getCURRENTBUDGET());
                             name.setEnabled(true);
                             amount.setEnabled(true);
                             submit.setEnabled(true);
@@ -1002,7 +1103,14 @@ public class MainActivity extends AppCompatActivity {
                             dialog.dismiss();
                             name.setText("");
                             amount.setText("");
-                            getBudeget(periondChecker);
+                            settings.setPERIOD("Day");
+                            settings.setCUSTOMDATEINDICATOR(true);
+                            settings.setCUSTOMDATE(newDate);
+                            finish();
+                            Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                            startActivity(intent);
+
+                            //getBudeget(periondChecker);
 
 
                             progressBar.setVisibility(View.GONE);
@@ -1011,7 +1119,7 @@ public class MainActivity extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(MainActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                             name.setEnabled(true);
                             amount.setEnabled(true);
                             submit.setEnabled(true);
@@ -1055,6 +1163,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void getUsername(){
+
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -1065,6 +1174,7 @@ public class MainActivity extends AppCompatActivity {
                     String refCode = dataSnapshot.child("reference_code").getValue().toString();
                     String ref = dataSnapshot.child("references").getValue().toString();
 
+
                     settings.setUSERNAME(full_name);
                     settings.setREFERENCECODE(refCode);
                     settings.setREFERENCES(ref);
@@ -1072,6 +1182,18 @@ public class MainActivity extends AppCompatActivity {
                     if(fname.contains(" ")){
                         String[] splitFname = fname.split(" ");
                         fname = splitFname[0];
+                    }
+                    Log.d("hhhhhh2", settings.getCURRENTBUDGET());
+                    if(!dataSnapshot.child("budget_name").getValue().toString().equals(settings.getCURRENTBUDGET())){
+
+                        userRef.child("budget_name").setValue(settings.getCURRENTBUDGET()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                current_Budget.setText(settings.getCURRENTBUDGET());
+                                getBudeget("Month");
+                            }
+                        });
+
                     }
 
                     getSupportActionBar().setTitle("Welcome "+Resource.capitalize(fname.toLowerCase()));
@@ -1090,6 +1212,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
         super.onResume();
     }
 }

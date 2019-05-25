@@ -89,6 +89,7 @@ public class Register extends AppCompatActivity {
 
                 if(email.getText().toString().isEmpty()) {
                     Toast.makeText(Register.this, "Enter an Email", Toast.LENGTH_SHORT).show();
+
                 }else
                 if(!email.getText().toString().contains("@")){
                     Toast.makeText(Register.this, "Enter a valid Email", Toast.LENGTH_SHORT).show();

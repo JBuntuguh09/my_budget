@@ -356,9 +356,9 @@ public class Resource {
 
     }
 
-    public static String getCustomCurrentDayMonthYear(String newDate) {
+    public static String getCustomDayMonthYear(String newDate) {
 
-        Calendar c = Calendar.getInstance();
+
         String myDate[] = newDate.split("/");
         int currYear = Integer.parseInt(myDate[2]);
         int currMonth = Integer.parseInt(myDate[1])-1;
@@ -397,6 +397,45 @@ public class Resource {
 
     }
 
+    public static String getCustomMonthYear(String newDate) {
+
+        String myDate[] = newDate.split("/");
+        int currYear = Integer.parseInt(myDate[2]);
+        int currMonth = Integer.parseInt(myDate[1])-1;
+
+
+
+        if(currMonth==0){
+           return "January, "+String.valueOf(currYear);
+        }else if(currMonth==1){
+            return "February, "+String.valueOf(currYear);
+        }else if(currMonth==2){
+            return "March, "+String.valueOf(currYear);
+        }else if(currMonth==3){
+            return "April, "+String.valueOf(currYear);
+        }else if(currMonth==4){
+            return "May, "+String.valueOf(currYear);
+        }else if(currMonth==5){
+            return "June, "+String.valueOf(currYear);
+        }else if(currMonth==6){
+            return "July, "+String.valueOf(currYear);
+        }else if(currMonth==7){
+            return "August, "+String.valueOf(currYear);
+        }else if(currMonth==8){
+            return "September, "+String.valueOf(currYear);
+        }else if(currMonth==9){
+            return "October, "+String.valueOf(currYear);
+        }else if(currMonth==10){
+            return "November, "+String.valueOf(currYear);
+        }else if(currMonth==11){
+            return "December, "+String.valueOf(currYear);
+        }
+        else {
+            return "";
+        }
+
+    }
+
     public static String getCurrentMonthYear() {
 
         Calendar c = Calendar.getInstance();
@@ -405,7 +444,7 @@ public class Resource {
 
 
         if(currMonth==0){
-           return "January, "+String.valueOf(currYear);
+            return "January, "+String.valueOf(currYear);
         }else if(currMonth==1){
             return "February, "+String.valueOf(currYear);
         }else if(currMonth==2){

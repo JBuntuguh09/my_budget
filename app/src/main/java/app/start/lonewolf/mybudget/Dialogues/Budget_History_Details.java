@@ -115,9 +115,9 @@ public class Budget_History_Details {
 
             if(hashMap.get("type").equals("Revenue")) {
                 View view = layoutInflater.inflate(R.layout.layout_budget_details, linearRev, false);
-                TextView itemName = (TextView) view.findViewById(R.id.txtBHDItemName);
-                final TextView amount = (TextView) view.findViewById(R.id.txtBHDAmount);
-                TextView date = (TextView)view.findViewById(R.id.txtBHDDate);
+                TextView itemName =  view.findViewById(R.id.txtBHDItemName);
+                final TextView amount =  view.findViewById(R.id.txtBHDAmount);
+                TextView date = view.findViewById(R.id.txtBHDDate);
 
 
                 itemName.setText(hashMap.get("name"));

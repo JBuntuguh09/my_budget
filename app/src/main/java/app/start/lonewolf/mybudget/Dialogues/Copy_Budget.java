@@ -3,6 +3,7 @@ package app.start.lonewolf.mybudget.Dialogues;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -34,12 +36,13 @@ import app.start.lonewolf.mybudget.Resources.Settings;
 
 public class Copy_Budget {
 
-    private static DatabaseReference databaseReference, budgetRef;
+    private static DatabaseReference databaseReference, budgetRef, budgetId, userRef;
     private static FirebaseAuth auth;
     private static String userId ;
     private static Settings settings;
     private static AlertDialog.Builder alert;
     private static ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
+    private static int itemId = 0;
 
     public Copy_Budget(){
 
@@ -53,6 +56,8 @@ public class Copy_Budget {
         databaseReference = FirebaseDatabase.getInstance().getReference();
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         budgetRef = FirebaseDatabase.getInstance().getReference().child("budgets").child(userId).child("simple");
+        budgetId = FirebaseDatabase.getInstance().getReference().child("data_identifiers").child("ledger_identifiers").child("ledger_id");
+        userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
 
 
         alert = new AlertDialog.Builder(activity);
@@ -132,53 +137,76 @@ public class Copy_Budget {
     }
 
     private static void setCopy(final EditText budgetName, final EditText budgetDate, Button submit, final Activity activity) {
-        Log.d("hero", settings.getVAR1());
-        arrayList.clear();
-        databaseReference.child("budgets").child(userId).child("simple").child(settings.getVAR1()).addListenerForSingleValueEvent(new ValueEventListener() {
+        budgetId.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(final DataSnapshot dataSnapshot) {
-                for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
-                    HashMap<String, String> hashMap = new HashMap<>();
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                  itemId = Integer.parseInt(dataSnapshot.getValue().toString());
+
+                if(itemId>0){
+                    arrayList.clear();
+                    databaseReference.child("budgets").child(userId).child("simple").child(settings.getVAR1()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(final DataSnapshot dataSnapshot) {
+                            for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                                HashMap<String, String> hashMap = new HashMap<>();
 
 //                    String itemPeriod = dataSnapshot1.child("date").getValue().toString();
 //                    String iPeriod[] = itemPeriod.split("-");
 
 
-                    if(!dataSnapshot1.child("amount").getValue().toString().equals("0.00")  ) {
-                        hashMap.put("item", dataSnapshot1.child("item").getValue().toString());
-                        hashMap.put("amount", dataSnapshot1.child("amount").getValue().toString());
-                        hashMap.put("id", dataSnapshot1.child("id").getValue().toString());
-                        hashMap.put("type", dataSnapshot1.child("type").getValue().toString());
-                        hashMap.put("date", Resource.getFormatDateAPI(budgetDate.getText().toString()));
+                                if(!dataSnapshot1.child("amount").getValue().toString().equals("0.00")  ) {
+                                    itemId = itemId + 1;
+                                    hashMap.put("item", dataSnapshot1.child("item").getValue().toString());
+                                    hashMap.put("amount", dataSnapshot1.child("amount").getValue().toString());
+                                    hashMap.put("id", String.valueOf(itemId));
+                                    hashMap.put("type", dataSnapshot1.child("type").getValue().toString());
+                                    hashMap.put("date", Resource.getFormatDateAPI(budgetDate.getText().toString()));
+
+                                    arrayList.add( hashMap);
+
+                                }
 
 
-                        arrayList.add(hashMap);
+                                if(arrayList.size()>0){
+                                    databaseReference.child("budgets").child(userId).child("simple").child(budgetName.getText().toString()).setValue(arrayList).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            budgetId.setValue(itemId);
+                                            settings.setCURRENTBUDGET(budgetName.getText().toString());
+                                            settings.setCUSTOMDATE(Resource.getFormatDateAPI(budgetDate.getText().toString()));
+                                            settings.setCUSTOMDATEINDICATOR(true);
+                                            userRef.child("budget_name").setValue(settings.getCURRENTBUDGET());
+                                            Intent intent = new Intent(activity, Budget_History.class);
+                                            activity.startActivity(intent);
+                                            activity.finish();
 
-                    }
+                                            Toast.makeText(activity, R.string.success_new_budget, Toast.LENGTH_SHORT).show();
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(activity, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
 
+                                }
 
-                    if(arrayList.size()>0){
-                        databaseReference.child("budgets").child(userId).child("simple").child(budgetName.getText().toString()).setValue(arrayList).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                settings.setCURRENTBUDGET(budgetName.getText().toString());
-
-                                Intent intent = new Intent(activity, Budget_History.class);
-                                activity.startActivity(intent);
-                                activity.finish();
                             }
-                        });
+                        }
 
-                    }
-
-
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Toast.makeText(activity, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                Toast.makeText(activity, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 }

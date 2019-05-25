@@ -26,6 +26,7 @@ public class Settings {
     private final String VAR4 = "var4";
     private final String VAR5 = "var5";
     private final String VAR6 = "var6";
+    private final String DATECHECK = "date check";
 
 
 
@@ -212,6 +213,16 @@ public class Settings {
     public void setVAR6(String var6){
         Editor editor = getEditor();
         editor.putString(VAR6, var6);
+        editor.commit();
+    }
+
+    public boolean getDATECHECK(){
+        return sharedPreferences.getBoolean(DATECHECK, false);
+    }
+
+    public void setDATECHECK(boolean datecheck){
+        Editor editor = getEditor();
+        editor.putBoolean(DATECHECK, datecheck);
         editor.commit();
     }
 

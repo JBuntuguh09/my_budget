@@ -180,7 +180,7 @@ public class Login extends AppCompatActivity {
                         login.setEnabled(true);
                         register.setEnabled(true);
                         progressBar.setVisibility(View.GONE);
-                        Toast.makeText(Login.this, R.string.cancelled, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Login.this, R.string.cancelled, Toast.LENGTH_LONG).show();
                     }
 
                     @Override
@@ -190,7 +190,7 @@ public class Login extends AppCompatActivity {
                         login.setEnabled(true);
                         register.setEnabled(true);
                         progressBar.setVisibility(View.GONE);
-                        Toast.makeText(Login.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Login.this, error.getMessage(), Toast.LENGTH_LONG).show();
 
                     }
                 });
@@ -269,7 +269,7 @@ public class Login extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
+                        Toast.makeText(Login.this, databaseError.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -309,7 +309,7 @@ public class Login extends AppCompatActivity {
                 password.setEnabled(true);
                 login.setEnabled(true);
                 register.setEnabled(true);
-                Toast.makeText(Login.this, e.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(Login.this, e.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -343,7 +343,7 @@ public class Login extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(Login.this, databaseError.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(Login.this, databaseError.getMessage(), Toast.LENGTH_LONG).show();
                 progressBar.setVisibility(View.GONE);
                 email.setEnabled(true);
                 password.setEnabled(true);
@@ -396,7 +396,7 @@ public class Login extends AppCompatActivity {
                                     login.setEnabled(true);
                                     register.setEnabled(true);
                                     progressBar.setVisibility(View.GONE);
-                                    Toast.makeText(Login.this, databaseError.toString(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(Login.this, databaseError.getMessage(), Toast.LENGTH_LONG).show();
                                 }
                             });
                             //updateUI(user);

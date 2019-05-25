@@ -270,13 +270,13 @@ public class User_Settings extends AppCompatActivity {
             }
         });
 
-        custom.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-                return false;
-            }
-        });
+//        custom.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//
+//                return false;
+//            }
+//        });
 
         imgDate.setOnClickListener(new View.OnClickListener() {
             @Override
